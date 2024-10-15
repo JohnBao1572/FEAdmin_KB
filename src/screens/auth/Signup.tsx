@@ -14,17 +14,17 @@ const Login = () => {
     const [isRemember, setIsRemember] = useState(false);
     const [form] = Form.useForm();
 
-    const handleLogin = async(values: { name:string; email: string; password: string }) => {
+    const handleLogin = async (values: { name: string; email: string; password: string }) => {
         console.log(values);
 
 
         setIsLoading(true);
-        try{
+        try {
             const res = await handleAPI('/auth/register', values, 'post');
             console.log(res);
-        }catch(error){
+        } catch (error) {
             console.log("Tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
-        } finally{
+        } finally {
             setIsLoading(false);
         }
     }
@@ -42,7 +42,7 @@ const Login = () => {
             <Form layout='vertical' form={form} onFinish={handleLogin} disabled={isloading} size='large'>
                 <FormItem name={'name'} label='Name' rules={[
                     {
-                        required:true,
+                        required: true,
                         message: 'Please enter your name',
                     }
                 ]}>
@@ -60,13 +60,13 @@ const Login = () => {
                     required: true,
                     message: 'Please enter your password to login your account'
                 },
-                ()=>({
-                    validator:(_, value)=>{
-                        if(value.length < 3){
+                () => ({
+                    validator: (_, value) => {
+                        if (value.length < 3) {
                             return Promise.reject(
                                 new Error('Mật khẩu ít nhất phải chứa 3 kí tự trở lên')
                             );
-                        } else{
+                        } else {
                             return Promise.resolve();
                         }
                     }
