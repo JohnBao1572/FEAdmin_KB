@@ -4,6 +4,9 @@ import { Link, useHref } from 'react-router-dom'
 import SocialLogin from './components/SocialLogin'
 import FormItem from 'antd/es/form/FormItem'
 import handleAPI from '../../apis/handleAPI'
+import { useDispatch } from 'react-redux'
+import { addAuth } from '../../reduxs/reducers/authReducer'
+import { localDataName } from '../../constants/appInfos'
 
 
 const { Title, Paragraph, Text } = Typography
@@ -12,16 +15,23 @@ const Login = () => {
 
     const [isloading, setIsLoading] = useState(false);
     const [isRemember, setIsRemember] = useState(false);
+
+    const dispatch = useDispatch();
+
     const [form] = Form.useForm();
 
     const handleLogin = async (values: { name: string; email: string; password: string }) => {
         console.log(values);
-
+        const api = '/auth/register';
 
         setIsLoading(true);
         try {
-            const res = await handleAPI('/auth/register', values, 'post');
-            console.log(res);
+            const res = await handleAPI(api, values, 'post');
+            if(res.data){
+                localStorage.setItem(localDataName.authData, JSON.stringify(res.data));
+
+                dispatch(addAuth(res.data));
+            }
         } catch (error) {
             console.log("Tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
         } finally {
@@ -32,7 +42,7 @@ const Login = () => {
 
         <Card style={{ width: '60%', }}>
             <div className="text-center">
-                <Title level={2}>Login</Title>
+                <Title level={2}>Sign-up</Title>
 
                 <Paragraph type='secondary'>
                     Welcome back! Please enter to your account details
@@ -97,7 +107,7 @@ const Login = () => {
             <div className="mt-4 text-center">
                 <Space>
                     <Text>Dont't have an account</Text>
-                    <Link to={'/sign-up'}>Sign up</Link>
+                    <Link to={'/'}>Login</Link>
                 </Space>
             </div>
         </Card>

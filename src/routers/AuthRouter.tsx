@@ -13,6 +13,7 @@ const AuthRouter = () => {
                     </div>
                     <div>
                         <title>ThienBao shopping mall</title>
+                        <h1>Bao yeu Thanh nhat, Thanh yeu Bao nhat</h1>
                     </div>
                 </div>
                 <div className="col content-center">

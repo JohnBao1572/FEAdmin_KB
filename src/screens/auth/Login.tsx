@@ -14,8 +14,6 @@ const Login = () => {
     const [form] = Form.useForm();
 
     const handleLogin = async (values: { email: string; password: string }) => {
-        console.log(values);
-
         try{
             const res = await handleAPI('/auth/login', values, 'post');
             console.log(res);
@@ -71,7 +69,7 @@ const Login = () => {
             <div className="mt-4 text-center">
                 <Space>
                     <Text>Dont't have an account</Text>
-                    <Link to={'/sign-up'}>Sign up</Link>
+                    <Link to={'/sign-up'}>Sign-up</Link>
                 </Space>
             </div>
         </Card>
