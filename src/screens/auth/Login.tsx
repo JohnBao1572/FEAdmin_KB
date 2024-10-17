@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Card, Checkbox, Form, Input, Space, Typography } from 'antd'
+import { Button, Card, Checkbox, Form, Input, message, Space, Typography } from 'antd'
 import { Link, useHref } from 'react-router-dom'
 import SocialLogin from './components/SocialLogin'
 import handleAPI from '../../apis/handleAPI'
+import { addAuth } from '../../reduxs/reducers/authReducer'
+import { useDispatch } from 'react-redux'
+import { localDataName } from '../../constants/appInfos'
 
 
 const { Title, Paragraph, Text } = Typography
@@ -11,20 +14,34 @@ const Login = () => {
 
     const [isloading, setIsLoading] = useState(false);
     const [isRemember, setIsRemember] = useState(false);
+
+    const dispatch = useDispatch();
+
     const [form] = Form.useForm();
 
     const handleLogin = async (values: { email: string; password: string }) => {
-        try{
+        try {
             const res = await handleAPI('/auth/login', values, 'post');
-            console.log(res);
-        }catch(error){
-            console.log("Sai tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
+
+            message.success(res.data.message);
+            res.data && dispatch(addAuth(res.data));
+
+            if(isRemember){
+                localStorage.setItem(localDataName.authData, JSON.stringify(res.data));
+            }
+        } catch (error:any) {
+            // console.log("Sai tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
+
+            message.error(error.message);
+        } finally{
+            setIsLoading(false);
         }
     }
     return (
 
         <Card style={{ width: '60%', }}>
             <div className="text-center">
+                <img className='mb-3' src="https://firebasestorage.googleapis.com/v0/b/kanban-a0807.appspot.com/o/Logo.png?alt=media&token=4f4cdc9c-ea40-4f8f-8f59-ebc3343fd63d" alt="" style={{ width: 48, height: 48, }} />
                 <Title level={2}>Login</Title>
 
                 <Paragraph type='secondary'>
@@ -50,7 +67,7 @@ const Login = () => {
 
             <div className="row">
                 <div className="col">
-                    <Checkbox checked={isRemember} onChange={(val) => { setIsRemember(val.target.checked) }}>Remember</Checkbox>
+                    <Checkbox checked={isRemember} onChange={(val) => { setIsRemember(val.target.checked) }}>Remember for 30 days</Checkbox>
                 </div>
                 <div className="col text-right">
                     <Link to={'/'}>Forgot password</Link>
@@ -73,7 +90,6 @@ const Login = () => {
                 </Space>
             </div>
         </Card>
-
     )
 }
 
