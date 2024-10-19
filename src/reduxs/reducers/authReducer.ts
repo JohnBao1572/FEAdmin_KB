@@ -1,3 +1,4 @@
+
 import { createSlice } from "@reduxjs/toolkit";
 import { StringLiteral } from "typescript";
 import { localDataName } from "../../constants/appInfos";

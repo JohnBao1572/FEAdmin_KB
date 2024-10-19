@@ -25,14 +25,14 @@ const Signup = () => {
 
         setIsLoading(true);
         try {
-            const res = await handleAPI(api, values, 'post');
+            const res:any = await handleAPI(api, values, 'post');
             if (res.data) {
-                message.success(res.data.message);
+                message.success('Đăng ký thành công',res.data.message);
 
                 dispatch(addAuth(res.data));
             }
         } catch (error) {
-            console.log("Tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
+            console.log("Tài khoản đã tồn tại. Vui lòng đăng nhập lại", error);
         } finally {
             setIsLoading(false);
         }

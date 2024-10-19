@@ -21,19 +21,19 @@ const Login = () => {
 
     const handleLogin = async (values: { email: string; password: string }) => {
         try {
-            const res = await handleAPI('/auth/login', values, 'post');
+            const res: any = await handleAPI('/auth/login', values, 'post');
 
-            message.success(res.data.message);
+            message.success('Đăng nhập thành công', res.data.message);
             res.data && dispatch(addAuth(res.data));
 
-            if(isRemember){
+            if (isRemember) {
                 localStorage.setItem(localDataName.authData, JSON.stringify(res.data));
             }
-        } catch (error:any) {
+        } catch (error: any) {
             // console.log("Sai tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại", error);
 
-            message.error(error.message);
-        } finally{
+            message.error('Tài khoản hoặc mật khẩu không trùng khớp', error);
+        } finally {
             setIsLoading(false);
         }
     }
@@ -82,7 +82,7 @@ const Login = () => {
                 </Button>
             </div>
 
-            <SocialLogin />
+            <SocialLogin isRemember={isRemember}/>
             <div className="mt-4 text-center">
                 <Space>
                     <Text>Dont't have an account</Text>
