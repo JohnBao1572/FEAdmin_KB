@@ -47,6 +47,7 @@ const MainRouter = () => {
 
               <Route>
                 <Route path='/categories' element={<Categories />} />
+                <Route path='/categories/detail/:slug'/>
               </Route>
             </Routes>
           </Content>

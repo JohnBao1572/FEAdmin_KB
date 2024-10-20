@@ -44,9 +44,12 @@ const AddCategory = (props: Props) => {
 
         data.slug = replaceName(values.title);
 
+        setIsLoading(true);
         try {
+            
             const res = await handleAPI(api, data, seleted ? 'put' : 'post');
-            message.success('Add new category successfully');
+            // message.success('Add new category successfully');
+            message.success(seleted ? 'Update category successfully' : 'Add new category successfully');
 
             onAddNew(res.data);
 
@@ -84,8 +87,8 @@ const AddCategory = (props: Props) => {
                     <Input allowClear />
                 </Form.Item>
 
-                <Form.Item name={'description'} label = 'Description'>
-                    <Input.TextArea rows={4}/>
+                <Form.Item name={'description'} label='Description'>
+                    <Input.TextArea rows={4} />
                 </Form.Item>
             </Form>
 
@@ -93,21 +96,21 @@ const AddCategory = (props: Props) => {
                 <Space>
                     {onClose && (
                         <Button loading={isLoading}
-                        disabled={isLoading}
-                        onClick={() =>{
-                            form.resetFields();
-                            onClose();
-                        }}>
+                            disabled={isLoading}
+                            onClick={() => {
+                                form.resetFields();
+                                onClose();
+                            }}>
                             Cancel
                         </Button>
                     )}
 
                     <Button
-                    loading={isLoading}
-                    disabled = {isLoading}
-                    type='primary'
-                    onClick={() => form.submit()}>
-                        {seleted? 'Update' : 'Submit'}
+                        loading={isLoading}
+                        disabled={isLoading}
+                        type='primary'
+                        onClick={() => form.submit()}>
+                        {seleted ? 'Update' : 'Submit'}
                     </Button>
                 </Space>
             </div>
