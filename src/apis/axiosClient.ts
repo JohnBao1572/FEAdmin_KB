@@ -26,10 +26,16 @@ axiosClient.interceptors.request.use(async (config: any) => {
     const accesstoken = getAccesstoken(); 
 
     config.headers = {
-        Authorization: accesstoken ? 'Bearer ${accesstoken}' : '',
+        Authorization: accesstoken ? `Bearer ${accesstoken}` : '',
         Accept: 'application/json',
         ...config.headers,
     }
+
+    // config.headers = {
+    //     Authorization: accesstoken ? `Bearer ${accesstoken}` : '',
+    //     Accept: 'application/json',
+    //     ...config.headers,
+    // }
 
     
     return {...config, data:config.data ?? null};
