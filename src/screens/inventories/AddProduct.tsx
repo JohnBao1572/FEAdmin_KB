@@ -98,45 +98,104 @@ const AddProduct = () => {
 		}
 	};
 
+	// const handleAddNewProduct = async (values: any) => {
+	// 	const content = editorRef.current.getContent();
+	// 	const data: any = {};
+	// 	setIsCreating(true);
+	// 	for (const i in values) {
+	// 		data[`${i}`] = values[i] ?? '';
+	// 	}
+
+	// 	data.content = content;
+	// 	data.slug = replaceName(values.title);
+
+	// 	if (fileList.length > 0) {
+	// 		const urls: string[] = [];
+	// 		fileList.forEach(async (file) => {
+	// 			if (file.originFileObj) {
+	// 				const url = await uploadFile(file.originFileObj);
+	// 				url && urls.push(url);
+	// 			} else {
+	// 				urls.push(file.url);
+	// 			}
+	// 		});
+
+	// 		data.images = urls;
+	// 	}
+
+	// 	try {
+	// 		await handleAPI(
+	// 			`/products/${id ? `update?id=${id}` : 'add-new'}`,
+	// 			data,
+	// 			id ? 'put' : 'post'
+	// 		);
+	// 		window.history.back();
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	} finally {
+	// 		setIsCreating(false);
+	// 	}
+	// };
+
+
 	const handleAddNewProduct = async (values: any) => {
+		// Bắt đầu quá trình tạo sản phẩm
+		setIsCreating(true);
+	
+		// Kiểm tra xem editorRef.current có tồn tại không
+		if (!editorRef.current) {
+			console.error("Editor is not initialized");
+			setIsCreating(false);
+			return; // Thoát khỏi hàm nếu editor chưa sẵn sàng
+		}
+	
+		// Lấy nội dung từ editor
 		const content = editorRef.current.getContent();
 		const data: any = {};
-		setIsCreating(true);
-		for (const i in values) {
-			data[`${i}`] = values[i] ?? '';
+	
+		// Gán giá trị từ values vào data
+		for (const key in values) {
+			data[key] = values[key] !== undefined ? values[key] : ''; // Đảm bảo không có giá trị undefined
 		}
-
+	
+		// Thêm nội dung và slug vào data
 		data.content = content;
 		data.slug = replaceName(values.title);
-
+	
+		// Nếu có file trong fileList, xử lý upload
 		if (fileList.length > 0) {
-			const urls: string[] = [];
-			fileList.forEach(async (file) => {
+			const uploadPromises = fileList.map(async (file) => {
 				if (file.originFileObj) {
-					const url = await uploadFile(file.originFileObj);
-					url && urls.push(url);
+					// Upload file và trả về URL
+					return await uploadFile(file.originFileObj);
 				} else {
-					urls.push(file.url);
+					// Nếu file đã có URL, trả về URL đó
+					return file.url;
 				}
 			});
-
-			data.images = urls;
+	
+			// Chờ tất cả các upload hoàn tất và lọc các URL hợp lệ
+			const urls = await Promise.all(uploadPromises);
+			data.images = urls.filter(Boolean); // Chỉ giữ lại các URL hợp lệ
 		}
-
+	
 		try {
+			// Gọi API để thêm hoặc cập nhật sản phẩm
 			await handleAPI(
 				`/products/${id ? `update?id=${id}` : 'add-new'}`,
 				data,
 				id ? 'put' : 'post'
 			);
+			// Quay lại trang trước đó
 			window.history.back();
 		} catch (error) {
-			console.log(error);
+			console.error("Error while adding/updating product:", error); // Ghi lại lỗi
 		} finally {
+			// Kết thúc quá trình tạo sản phẩm
 			setIsCreating(false);
 		}
 	};
-
+	
 	const getSuppliers = async () => {
 		const api = `/supplier`;
 		const res = await handleAPI(api);
@@ -225,9 +284,11 @@ const AddProduct = () => {
 										{ value: 'First.Name', title: 'First Name' },
 										{ value: 'Email', title: 'Email' },
 									],
-									
+									ai_request: (request: any, respondWith: { string: (arg0: () => Promise<never>) => any; }) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
 								}}
-								initialValue="Welcome to TinyMCE!"
+
+								onInit={(evt, editor) => editorRef.current = editor}
+								initialValue="Chào mừng đến với trung tâm thương mại Thiên Bảo"
 							/>
 						</div>
 						<div className='col-4'>
@@ -340,3 +401,5 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
+
