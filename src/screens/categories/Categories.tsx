@@ -79,14 +79,14 @@ const Categories = () => {
 			dataIndex: '',
 			render: (item: any) => (
 				<Space>
-					<Tooltip title='Edit categories' key={'btnEdit'}>
+					<Tooltip title='Edit category' key={'btnEdit'}>
 						<Button
 							onClick={() => setCategorySelected(item)}
 							icon={<Edit2 size={20} color={colors.gray600} />}
 							type='text'
 						/>
 					</Tooltip>
-					<Tooltip title='Xoá categories' key={'btnDelete'}>
+					<Tooltip title='Delete category' key={'btnDelete'}>
 						<Button
 							onClick={() =>
 								confirm({

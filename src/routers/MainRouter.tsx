@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
 import HeaderComponent from '../components/HeaderComponent';
 import { Orders, ReportScreen, Suppliers } from '../screens';
 import Categories from '../screens/categories/Categories';
+import Inventories from '../screens/inventories/Inventories';
+import AddProduct from '../screens/inventories/AddProduct';
+import ProductDetail from '../screens/inventories/ProductDetail';
 
 
 const { Content, Footer, Header, Sider } = Layout;
@@ -34,9 +37,9 @@ const MainRouter = () => {
               <Route path='/' element={<HomeScreen />}></Route>
 
               <Route>
-                <Route path='/inventory' />
-                <Route path='/inventory/add-product' />
-                <Route path='/inventory/detail/:slug' />
+                <Route path='/inventory' element={<Inventories />} />
+                <Route path='/inventory/add-product' element={<AddProduct />} />
+                <Route path='/inventory/detail/:slug' element={<ProductDetail />} />
               </Route>
 
               <Route path='/report' element={<ReportScreen />} />
@@ -47,7 +50,7 @@ const MainRouter = () => {
 
               <Route>
                 <Route path='/categories' element={<Categories />} />
-                <Route path='/categories/detail/:slug'/>
+                <Route path='/categories/detail/:slug' />
               </Route>
             </Routes>
           </Content>
