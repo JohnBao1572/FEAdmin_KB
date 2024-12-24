@@ -71,7 +71,7 @@ const AddCategory = (props: Props) => {
 						treeDefaultExpandAll
 					/>
 				</Form.Item>
-				
+
 				<Form.Item
 					name={'title'}
 					rules={[

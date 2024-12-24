@@ -4,7 +4,7 @@ import { Affix, Layout } from 'antd'
 import SiderComponent from '../components/SiderComponent';
 import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
 import HeaderComponent from '../components/HeaderComponent';
-import { Orders, ReportScreen, Suppliers } from '../screens';
+import { ManageStore, Orders, ReportScreen, Suppliers } from '../screens';
 import Categories from '../screens/categories/Categories';
 import Inventories from '../screens/inventories/Inventories';
 import AddProduct from '../screens/inventories/AddProduct';
@@ -52,14 +52,15 @@ const MainRouter = () => {
                 <Route path='/categories' element={<Categories />} />
                 <Route path='/categories/detail/:slug' />
               </Route>
+
+              <Route path='/manage-store' element={<ManageStore />} />
+              <Route />
             </Routes>
           </Content>
           <Footer />
         </Layout>
       </Layout>
     </BrowserRouter>
-
-
   )
 }
 

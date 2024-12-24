@@ -37,10 +37,10 @@
   }
 }
 
-.ant-menu-title-content a{
+.ant-menu-title-content a {
   text-decoration: none;
 }
-.ant-menu-title-content a:hover{
+.ant-menu-title-content a:hover {
   background-color: yellow;
   text-decoration: none;
 }
