@@ -1,5 +1,5 @@
 import { Layout, Menu, MenuProps, Typography } from 'antd';
-import { Box, Chart, Home, Home2 } from 'iconsax-react';
+import { Box, Chart, Home, Home2, PercentageSquare } from 'iconsax-react';
 import { MdInventory } from "react-icons/md";
 import { FaTags } from "react-icons/fa";
 import { CiUser, CiViewList } from "react-icons/ci";
@@ -68,6 +68,11 @@ const SiderComponent = () => {
           icon: <CiViewList size={20}/>
         },
         
+        {
+          key: 'Promotions',
+          label: <Link to={'/promotions'}>Promotion</Link>,
+          icon: <PercentageSquare size={20}/>
+        },
     ];
 
   return (
