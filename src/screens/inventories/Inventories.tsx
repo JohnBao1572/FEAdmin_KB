@@ -408,35 +408,35 @@ const Inventories = () => {
 		'66fd64da909d3dbc02cdb133',
 	];
 	const handleAddDemoProduct = () => {
-		// Array.from({ length: 500 }).forEach(async (_item) => {
-		// 	const catNums = Math.floor(Math.random() * cats.length);
+		Array.from({ length: 50 }).forEach(async (_item) => {
+			const catNums = Math.floor(Math.random() * cats.length);
 
-		// 	const categories: string[] = [];
-		// 	Array.from({ length: cats.length }).forEach(
-		// 		(num) => categories.length < 3 && categories.push(cats[catNums])
-		// 	);
+			const categories: string[] = [];
+			Array.from({ length: cats.length }).forEach(
+				(num) => categories.length < 3 && categories.push(cats[catNums])
+			);
 
-		// 	const data = {
-		// 		title: 'Demo title Lorem ipsum dolor sit.',
-		// 		slug: replaceName(`Demo title Lorem ipsum dolor sit.`),
-		// 		description:
-		// 			'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum cupiditate, repellendus aperiam provident ex accusantium numquam aliquid eligendi odit ea omnis iste quisquam, quos suscipit, tenetur expedita nihil similique impedit!',
-		// 		categories,
-		// 		supplier: 'YK Disney',
-		// 		content: '',
-		// 		images: [images[Math.floor(Math.random() * images.length)]],
-		// 	};
+			const data = {
+				title: 'Demo title Lorem ipsum dolor sit.',
+				slug: replaceName(`Demo title Lorem ipsum dolor sit.`),
+				description:
+					'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum cupiditate, repellendus aperiam provident ex accusantium numquam aliquid eligendi odit ea omnis iste quisquam, quos suscipit, tenetur expedita nihil similique impedit!',
+				categories,
+				supplier: 'YK Disney',
+				content: '',
+				images: [images[Math.floor(Math.random() * images.length)]],
+			};
 
-		// 	try {
-		// 		const res = await handleAPI(`/products/add-new`, data, 'post');
-		// 		console.log('Add product done');
-		// 		if (res.data) {
-		// 			await handleAddSubProduct(res.data._id);
-		// 		}
-		// 	} catch (error) {
-		// 		console.log(error);
-		// 	}
-		// });
+			try {
+				const res = await handleAPI(`/products/add-new`, data, 'post');
+				console.log('Add product done');
+				if (res.data) {
+					await handleAddSubProduct(res.data._id);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		});
 	};
 
 	const handleAddSubProduct = async (id: string) => {

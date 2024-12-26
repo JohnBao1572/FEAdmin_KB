@@ -1,5 +1,8 @@
-import { DatePicker, Form, Input, InputNumber, Modal, Select, Upload, UploadFile } from 'antd';
+import { upload } from '@testing-library/user-event/dist/upload';
+import { DatePicker, Form, Input, InputNumber, message, Modal, Select, Upload, UploadFile, UploadProps } from 'antd';
 import React, { useState } from 'react'
+import { uploadFile } from '../utils/uploadFile';
+import handleAPI from '../apis/handleAPI';
 
 interface Props {
     visible: boolean;
@@ -9,14 +12,65 @@ interface Props {
 
 const AddPromotions = (props: Props) => {
     const { visible, onClose, promotion } = props;
-    const [imageUpload, setImageUpload] = useState<UploadFile[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [imageUpload, setImageUpload] = useState<any[]>([]);
     const [form] = Form.useForm();
     const handleClose = () => {
+        form.resetFields();
         onClose();
     }
 
-    const handleAddNewPromotion = async (values: any) => {
+    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+        const items = newFileList.map((item) =>
+            item.originFileObj
+                ? {
+                    ...item,
+                    url: item.originFileObj
+                        ? URL.createObjectURL(item.originFileObj)
+                        : '',
+                    status: 'done',
+                }
+                : { ...item }
+        );
 
+        setImageUpload(items);
+    };
+
+    const handleAddNewPromotion = async (values: any) => {
+        if (imageUpload.length === 0) {
+            throw new Error('Please upload image');
+        } else {
+            const start = values.startAt;
+            console.log(start);
+            const end = values.endAt;
+
+            if (new Date(end).getTime() < new Date(start).getTime()) {
+                message.error('End time must be higher than start time');
+            }
+            else {
+                const data: any = [];
+                for (const i in values) {
+                    data[i] = values[i] ?? '';
+                }
+
+                data.startAt = new Date(start);
+                data.endAt = new Date(end);
+
+                data.imageURL = imageUpload.length > 0 && imageUpload[0].originFileObj ? await uploadFile(imageUpload[0].originFileObj) : '';
+
+                console.log(data);
+
+                const api = `/promotion/add-new-promotion`;
+                setIsLoading(true);
+                try {
+                    const res = await handleAPI(api, data, 'post');
+                } catch (error: any) {
+                    message.error(error.message);
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+        }
     }
 
     return (
@@ -24,8 +78,10 @@ const AddPromotions = (props: Props) => {
             open={visible}
             onClose={handleClose}
             onCancel={handleClose}
+            okButtonProps={{ loading: isLoading, }}
+            cancelButtonProps={{ loading: isLoading, }}
             onOk={() => form.submit()}>
-            <Upload fileList={imageUpload} listType='picture-card' className='mb-3' onChange={(val) => { console.log(val)}}>
+            <Upload fileList={imageUpload} listType='picture-card' className='mb-3' onChange={handleChange}>
                 {imageUpload.length === 0 ? 'Upload' : null}
             </Upload>
             <Form form={form}
