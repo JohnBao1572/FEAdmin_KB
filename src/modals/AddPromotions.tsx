@@ -1,14 +1,17 @@
 import { upload } from '@testing-library/user-event/dist/upload';
 import { DatePicker, Form, Input, InputNumber, message, Modal, Select, Upload, UploadFile, UploadProps } from 'antd';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { uploadFile } from '../utils/uploadFile';
 import handleAPI from '../apis/handleAPI';
+import { PromotionModel } from '../models/PromotionModels';
+import dayjs from 'dayjs';
+import { url } from 'inspector';
 
 interface Props {
     visible: boolean;
     onClose: () => void;
-    promotion?: any;
-    onAddNew:(val:any) => void;
+    promotion?: PromotionModel;
+    onAddNew: (val: PromotionModel) => void;
 }
 
 const AddPromotions = (props: Props) => {
@@ -16,6 +19,23 @@ const AddPromotions = (props: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [imageUpload, setImageUpload] = useState<any[]>([]);
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (promotion) {
+            form.setFieldsValue({
+                ...promotion,
+                startAt: dayjs(promotion.startAt),
+                endAt: dayjs(promotion.endAt),
+            });
+
+            if(promotion.imageURL){
+                setImageUpload([
+                    {uid: '-1', url: promotion.imageURL, status: 'done'}
+                ]);
+            }
+        }
+    }, [promotion])
+
     const handleClose = () => {
         form.resetFields();
         onClose();
@@ -67,14 +87,15 @@ const AddPromotions = (props: Props) => {
                 data.endAt = new Date(end);
 
                 data.imageURL = imageUpload.length > 0 && imageUpload[0].originFileObj ? await uploadFile(imageUpload[0].originFileObj) : '';
-                
+
                 console.log("Form Values:", values); // Kiểm tra giá trị trong form
+
                 // console.log(data); // Kiểm tra dữ liệu trước khi gửi
 
-                const api = `/promotions/add-new`;
+                const api = `/promotions/${promotion? `update-promotionid=${promotion._id}` : 'add-new'}`;
                 setIsLoading(true);
                 try {
-                    const res = await handleAPI(api, data, 'post');
+                    const res = await handleAPI(api, data,promotion? 'put' : 'post');
                     // console.log(res);
 
                     onAddNew(res.data);
@@ -105,7 +126,7 @@ const AddPromotions = (props: Props) => {
                 layout='vertical'>
                 <Form.Item name={'title'}
                     label='Title'
-                    rules={[{required: true, message:"please select start date"}]}>
+                    rules={[{ required: true, message: "please select start date" }]}>
                     <Input placeholder='title' allowClear />
                 </Form.Item>
 
@@ -116,13 +137,13 @@ const AddPromotions = (props: Props) => {
 
                 <div className="row">
                     <div className="col">
-                        <Form.Item name={'code'} label='CODE' rules={[{required: true, message:"please select start date"}]}>
+                        <Form.Item name={'code'} label='CODE' rules={[{ required: true, message: "please select start date" }]}>
                             <Input />
                         </Form.Item>
                     </div>
 
                     <div className="col">
-                        <Form.Item name={'value'} label='Value' rules={[{required: true, message:"please select start date"}]}>
+                        <Form.Item name={'value'} label='Value' rules={[{ required: true, message: "please select start date" }]}>
                             <Input type='number' />
                         </Form.Item>
                     </div>
