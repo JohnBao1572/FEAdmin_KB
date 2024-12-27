@@ -8,10 +8,11 @@ interface Props {
     visible: boolean;
     onClose: () => void;
     promotion?: any;
+    onAddNew:(val:any) => void;
 }
 
 const AddPromotions = (props: Props) => {
-    const { visible, onClose, promotion } = props;
+    const { visible, onClose, promotion, onAddNew } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [imageUpload, setImageUpload] = useState<any[]>([]);
     const [form] = Form.useForm();
@@ -41,29 +42,43 @@ const AddPromotions = (props: Props) => {
             throw new Error('Please upload image');
         } else {
             const start = values.startAt;
-            console.log(start);
+            // console.log(start);
             const end = values.endAt;
 
             if (new Date(end).getTime() < new Date(start).getTime()) {
                 message.error('End time must be higher than start time');
             }
             else {
-                const data: any = [];
-                for (const i in values) {
-                    data[i] = values[i] ?? '';
-                }
+                // const data: any = [];
+                // for (const i in values) {
+                //     data[i] = values[i] ?? '';
+                // }
+
+                const data = {
+                    ...values, // Sao chép tất cả giá trị từ form
+                    startAt: new Date(values.startAt),
+                    endAt: new Date(values.endAt),
+                    imageURL: imageUpload.length > 0 && imageUpload[0].originFileObj
+                        ? await uploadFile(imageUpload[0].originFileObj)
+                        : '',
+                };
 
                 data.startAt = new Date(start);
                 data.endAt = new Date(end);
 
                 data.imageURL = imageUpload.length > 0 && imageUpload[0].originFileObj ? await uploadFile(imageUpload[0].originFileObj) : '';
+                
+                console.log("Form Values:", values); // Kiểm tra giá trị trong form
+                // console.log(data); // Kiểm tra dữ liệu trước khi gửi
 
-                console.log(data);
-
-                const api = `/promotion/add-new-promotion`;
+                const api = `/promotions/add-new`;
                 setIsLoading(true);
                 try {
                     const res = await handleAPI(api, data, 'post');
+                    // console.log(res);
+
+                    onAddNew(res.data);
+                    handleClose();
                 } catch (error: any) {
                     message.error(error.message);
                 } finally {
@@ -90,7 +105,7 @@ const AddPromotions = (props: Props) => {
                 layout='vertical'>
                 <Form.Item name={'title'}
                     label='Title'
-                    rules={[{ required: true, message: 'Please input name promotion for product' }]}>
+                    rules={[{required: true, message:"please select start date"}]}>
                     <Input placeholder='title' allowClear />
                 </Form.Item>
 
@@ -101,13 +116,13 @@ const AddPromotions = (props: Props) => {
 
                 <div className="row">
                     <div className="col">
-                        <Form.Item name={'code'} label='CODE' rules={[{ required: true }]}>
+                        <Form.Item name={'code'} label='CODE' rules={[{required: true, message:"please select start date"}]}>
                             <Input />
                         </Form.Item>
                     </div>
 
                     <div className="col">
-                        <Form.Item name={'value'} label='Value'>
+                        <Form.Item name={'value'} label='Value' rules={[{required: true, message:"please select start date"}]}>
                             <Input type='number' />
                         </Form.Item>
                     </div>
