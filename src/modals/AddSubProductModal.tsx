@@ -73,42 +73,40 @@ const AddSubProductModal = (props: Props) => {
 			}
 
 			setIsLoading(true);
-			const api = `/products/${subProduct? `update-sub-product?id=${subProduct._id}` :'add-sub-product'}`;
-			try {
-				// console.log(api);
-				const res = await handleAPI(api, data, subProduct ? 'put' : 'post');
-				//await uploadFileForId(res.data._id);
-				onAddNew(res.data);
-				handleCancel();
-			} catch (error) {
-				console.log(error);
-			} finally {
-				setIsLoading(false);
-			}
-		} else {
-			message.error('Need to product detail');
-		}
-	};
-
-	const uploadFileForId = async (subId: string) => {
-		try {
+			// Kiểm tra hình ảnh subProduct bị lỗi truyền api từ FE sang BE
 			if (fileList.length > 0) {
 				const urls: string[] = [];
 				fileList.forEach(async (file) => {
 					const url = await uploadFile(file.originFileObj);
 					url && urls.push(url);
 
-					if (urls.length === fileList.length) {
-						await handleAPI(
-							`/products/update-sub-product?id=${subId}`,
-							{ images: urls },
-							'put'
-						);
+					if(urls.length === fileList.length){
+						data.images = urls;
+						await createSubProduct(data);
 					}
 				});
+				
+			} else{
+				await createSubProduct(data);
 			}
+			// console.log(data)			
+		} else {
+			message.error('Need to product detail');
+		}
+	};
+
+	const createSubProduct = async (data: any,) => {
+		const api = `/products/${subProduct? `update-sub-product?id=${subProduct._id}` :'add-sub-product'}`;
+		try {
+			// console.log(api);
+			const res = await handleAPI(api, data, subProduct ? 'put' : 'post');
+			//await uploadFileForId(res.data._id);
+			onAddNew(res.data);
+			handleCancel();
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
