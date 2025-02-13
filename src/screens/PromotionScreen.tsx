@@ -7,7 +7,7 @@ import { Table } from 'antd'
 import { ColumnProps } from 'antd/es/table';
 import { Edit, Edit2, Trash } from 'iconsax-react';
 
-const {confirm} = Modal;
+const { confirm } = Modal;
 
 const PromotionScreen = () => {
   const [visiblePromotion, setIsVisiblePromotion] = useState(false);
@@ -41,13 +41,13 @@ const PromotionScreen = () => {
     }
   };
 
-  const handleRemovePromotion = async (id:string) =>{
+  const handleRemovePromotion = async (id: string) => {
     const api = `/promotions/delete-promotion?id=${id}`
 
     try {
       await handleAPI(api, undefined, 'delete')
       await getPromotions();
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error)
     }
   };
@@ -57,7 +57,7 @@ const PromotionScreen = () => {
       key: 'image',
       dataIndex: 'imageURL',
       title: 'Image',
-      render: (img:string) => <Avatar src={img} size={50}/>
+      render: (img: string) => <Avatar src={img} size={50} />
     },
 
     {
@@ -101,28 +101,28 @@ const PromotionScreen = () => {
       dataIndex: '',
       align: 'right',
       fixed: 'right',
-      render: (item: PromotionModel) =>(
+      render: (item: PromotionModel) => (
         <Space>
-          <Button 
-          onClick={() => {
-            setPromotionSelected(item);
-            setIsVisiblePromotion(true);
-          }}
-          type='text' 
-          icon={<Edit2 variant='Bold' size={20} className='text-info'/>}/>
+          <Button
+            onClick={() => {
+              setPromotionSelected(item);
+              setIsVisiblePromotion(true);
+            }}
+            type='text'
+            icon={<Edit2 variant='Bold' size={20} className='text-info' />} />
 
           <Button onClick={() => {
             // Sẽ xác thực người dùng trước khi muốn xóa
             confirm({
               title: 'Confirm',
               content: 'Are you sure you want to remove this promotion',
-              onOk:() => handleRemovePromotion(item._id),
-          })
-        }} 
-          type='text' 
-          icon={<Trash variant='Bold' 
-          size={20} 
-          className='text-danger'/>}/>
+              onOk: () => handleRemovePromotion(item._id),
+            })
+          }}
+            type='text'
+            icon={<Trash variant='Bold'
+              size={20}
+              className='text-danger' />} />
         </Space>
       )
     },
@@ -130,16 +130,24 @@ const PromotionScreen = () => {
 
   return (
     <div>
-      {/* <Button onClick={() => setIsVisiblePromotion(true)}>Add new promotion</Button> */}
+      <Button onClick={() => setIsVisiblePromotion(true)}>Add new promotion</Button>
 
       <div className="container">
-          <Table loading={isLoading} columns={columns} dataSource={promotions}/>
+        <Table loading={isLoading} columns={columns} dataSource={promotions} />
       </div>
 
-      <AddPromotions promotion={promotionSelected}
-      onAddNew={async(val) => getPromotions()} 
-      visible={visiblePromotion} 
-      onClose={() => setIsVisiblePromotion(false)} />
+      <AddPromotions
+        promotion={promotionSelected}
+        onAddNew={async (val) => {
+          await getPromotions();
+          setPromotionSelected(undefined);
+        }}
+        visible={visiblePromotion}
+        onClose={() => {
+          setIsVisiblePromotion(false);
+          setPromotionSelected(undefined);
+        }}
+      />
     </div>
   )
 }

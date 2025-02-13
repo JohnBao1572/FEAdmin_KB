@@ -28,9 +28,9 @@ const AddPromotions = (props: Props) => {
                 endAt: dayjs(promotion.endAt),
             });
 
-            if(promotion.imageURL){
+            if (promotion.imageURL) {
                 setImageUpload([
-                    {uid: '-1', url: promotion.imageURL, status: 'done'}
+                    { uid: '-1', url: promotion.imageURL, status: 'done' }
                 ]);
             }
         }
@@ -59,53 +59,37 @@ const AddPromotions = (props: Props) => {
 
     const handleAddNewPromotion = async (values: any) => {
         if (imageUpload.length === 0) {
-            throw new Error('Please upload image');
-        } else {
-            const start = values.startAt;
-            // console.log(start);
-            const end = values.endAt;
+            message.error('Please upload image');
+            return;
+        }
 
-            if (new Date(end).getTime() < new Date(start).getTime()) {
-                message.error('End time must be higher than start time');
-            }
-            else {
-                // const data: any = [];
-                // for (const i in values) {
-                //     data[i] = values[i] ?? '';
-                // }
+        const start = values.startAt;
+        const end = values.endAt;
 
-                const data = {
-                    ...values, // Sao chép tất cả giá trị từ form
-                    startAt: new Date(values.startAt),
-                    endAt: new Date(values.endAt),
-                    imageURL: imageUpload.length > 0 && imageUpload[0].originFileObj
-                        ? await uploadFile(imageUpload[0].originFileObj)
-                        : '',
-                };
+        if (new Date(end).getTime() < new Date(start).getTime()) {
+            message.error('End time must be higher than start time');
+            return;
+        }
 
-                data.startAt = new Date(start);
-                data.endAt = new Date(end);
+        const data = {
+            ...values,
+            startAt: new Date(values.startAt),
+            endAt: new Date(values.endAt),
+            imageURL: imageUpload.length > 0 && imageUpload[0].originFileObj
+                ? await uploadFile(imageUpload[0].originFileObj)
+                : imageUpload[0].url,
+        };
 
-                data.imageURL = imageUpload.length > 0 && imageUpload[0].originFileObj ? await uploadFile(imageUpload[0].originFileObj) : '';
-
-                console.log("Form Values:", values); // Kiểm tra giá trị trong form
-
-                // console.log(data); // Kiểm tra dữ liệu trước khi gửi
-
-                const api = `/promotions/${promotion? `update-promotionid=${promotion._id}` : 'add-new'}`;
-                setIsLoading(true);
-                try {
-                    const res = await handleAPI(api, data,promotion? 'put' : 'post');
-                    // console.log(res);
-
-                    onAddNew(res.data);
-                    handleClose();
-                } catch (error: any) {
-                    message.error(error.message);
-                } finally {
-                    setIsLoading(false);
-                }
-            }
+        const api = `/promotions/${promotion ? `update-promotion?id=${promotion._id}` : 'add-new'}`;
+        setIsLoading(true);
+        try {
+            const res = await handleAPI(api, data, promotion ? 'put' : 'post');
+            onAddNew(res.data);
+            handleClose();
+        } catch (error: any) {
+            message.error(error.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
