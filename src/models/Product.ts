@@ -105,7 +105,6 @@ export interface BillModel {
 	shippingAddress: AddressModel;
 	paymentStatus: PaymentStatus;
 	paymentMethod: PaymentMethod;
-	paymentStatusTag: BillStatus;
 	createdAt: string;
 	updatedAt: string;
 	__v: number;
