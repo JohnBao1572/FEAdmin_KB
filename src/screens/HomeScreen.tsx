@@ -1,107 +1,68 @@
-// Có thể viết (rfc) nó sẽ export const variables
-// Hoặc có thể viết (rafce) nó sẽ import => tạo biến => rối mới export
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { removeAuth } from '../reduxs/reducers/authReducer';
 import handleAPI from '../apis/handleAPI';
-import { StatisticModel } from '../models/StatisticModel';
-import { colors } from '../constants/colors';
-import { LiaCoinsSolid } from "react-icons/lia";
-import StatisticComponent from '../components/StatisticComponent';
-
+import { Card, Col, Row, Statistic, Table } from 'antd';
+import { ShoppingCartOutlined, DollarOutlined } from "@ant-design/icons";
+import axios from 'axios';
+import { SubProductModel } from '../models/Product';
+import { ReportModel } from '../models/reportModel';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const [bestSellingProducts, setBestSellingProducts] = useState<SubProductModel[]>([]);
+  const [getTotal, setGetTotal] = useState<ReportModel>()
 
-  const salesData: StatisticModel[] = [
-    {
-      key: 'sales',
-      description: 'Sales',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30}
-        color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'currency',
-    },
+  useEffect(() => {
+    fetchTopSellingProducts();
+  }, []);
 
-    {
-      key: 'revenue',
-      description: 'Revenue',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30} color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'number',
-    },
+  const fetchTopSellingProducts = async () => {
+    const api = `http://localhost:5000/reports/top5ProductBestSell`;
+    try {
+      const res = await handleAPI(api);
+      setBestSellingProducts(res.data);
+    } catch (error) {
+      console.error("Error fetching top selling products:", error);
+    }
+  };
 
-    {
-      key: 'profit',
-      description: 'Profit',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30}
-        color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'currency',
-    },
+  const columns = [
+    { title: "Name product", dataIndex: "title", key: "title" },
 
-    {
-      key: 'cost',
-      description: 'Cost',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30}
-        color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'number',
+    { 
+      title: "Image", 
+      dataIndex: "image", 
+      key: "image",
+      render: (image: string) => <img src={image} alt="Product" style={{ width: 50, height: 50 }} />,
     },
+    
+    { title: "Giá", dataIndex: "price", key: "price" },
+
+    { title: "Quantity", dataIndex: "count", key: "count" },
+
+    { title: "Sizes", dataIndex: "size", key: "size" },
+
+    { title: "colors", dataIndex: "color", key: "color" },
   ];
 
-  const inventoryDatas: StatisticModel[] = [
-    {
-      key: 'sales',
-      description: 'Sales',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30}
-        color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'currency',
-      type: 'vertical',
-    },
-
-    {
-      key: 'revenue',
-      description: 'Revenue',
-      color: `${colors.primary500}36`,
-      icon: <LiaCoinsSolid size={30}
-        color={colors.primary500} />,
-      value: Math.floor(Math.random() * 1000000),
-      valueType: 'number',
-      type: 'vertical',
-    },
-  ]
-
   return (
-    <div>
-      <div className="row">
+    <div style={{ padding: 20 }}>
+      <Card title="Sales Overview" style={{ marginBottom: 20 }}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={12} md={6}>
+            <Card>
+              <Statistic title="Total Sales" value={bestSellingProducts.reduce((sum, item) => sum + item.count, 0)} prefix={<ShoppingCartOutlined />} />
+            </Card>
+          </Col>
+        </Row>
+      </Card>
 
-        <div className="col-md-8">
-          <StatisticComponent title={'Sales Overview'} datas={salesData} />
-
-          <StatisticComponent title={'Purchase Overview'} datas={salesData} />
-
-          <StatisticComponent title={'Sales Overview'} datas={salesData} />
-
-          <StatisticComponent title={'Sales Overview'} datas={salesData} />
-
-          <StatisticComponent title={'Sales Overview'} datas={salesData} />
-        </div>
-
-        <div className="col-md-4">
-          <StatisticComponent datas={inventoryDatas} title='Inventory Sumary' />
-
-          <StatisticComponent datas={inventoryDatas} title='Product Sumary' />
-        </div>
-      </div>
+      <Card title="Product Best Selling" extra={<a href="#">See All</a>} style={{ marginBottom: 20 }}>
+        <Table dataSource={bestSellingProducts} columns={columns} pagination={false} rowKey="_id" />
+      </Card>
     </div>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;

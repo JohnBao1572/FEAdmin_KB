@@ -13,7 +13,7 @@ const AuthRouter = () => {
                 <div className="col d-none d-lg-block text-center"
                     style={{ marginTop: '15%' }}>
                     <div className="mb-4">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/kanban-a0807.appspot.com/o/thanhxinh.jpg?alt=media&token=e49e6f2a-7594-4a74-86db-0a3dea09a2fe" alt="Công ty của Thiên Bảo và Thu Thanh nè" style={{ width: 270, objectFit: 'cover', borderRadius: 20 }} />
+                        <img src="https://firebasestorage.googleapis.com/v0/b/kanban-a0807.appspot.com/o/thanhxinh.jpg?alt=media&token=e49e6f2a-7594-4a74-86db-0a3dea09a2fe" alt="Công ty của Thiên Bảo" style={{ width: 270, objectFit: 'cover', borderRadius: 20 }} />
                     </div>
 
                     <div>
