@@ -52,13 +52,13 @@ const HomeScreen = () => {
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} md={6}>
             <Card>
-              <Statistic title="Total Sales" value={bestSellingProducts.reduce((sum, item) => sum + item.count, 0)} prefix={<ShoppingCartOutlined />} />
+              <Statistic title="Total products best sold" value={bestSellingProducts.reduce((sum, item) => sum + item.count, 0)} prefix={<ShoppingCartOutlined />} />
             </Card>
           </Col>
         </Row>
       </Card>
 
-      <Card title="Product Best Selling" extra={<a href="#">See All</a>} style={{ marginBottom: 20 }}>
+      <Card title="Product Best Selling" style={{ marginBottom: 20 }}>
         <Table dataSource={bestSellingProducts} columns={columns} pagination={false} rowKey="_id" />
       </Card>
     </div>
