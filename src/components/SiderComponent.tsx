@@ -61,12 +61,6 @@ const SiderComponent = () => {
           label: <Link to={'/orders'}>Order</Link>,
           icon: <Box size={20}/>,
         },
-
-        {
-          key: 'Manage Store',
-          label: <Link to={'/mange-store'}>Manage Store</Link>,
-          icon: <CiViewList size={20}/>
-        },
         
         {
           key: 'Promotions',

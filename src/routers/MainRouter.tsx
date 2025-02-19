@@ -54,7 +54,7 @@ const MainRouter = () => {
                 <Route path='/categories/detail/:slug' />
               </Route>
 
-              {/* <Route path='/manage-store' element={<ManageStore />} /> */}
+              
               <Route path='/promotions' element={<PromotionScreen />} />
               <Route />
             </Routes>

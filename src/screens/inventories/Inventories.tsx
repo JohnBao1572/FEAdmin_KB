@@ -430,7 +430,7 @@ const Inventories = () => {
 							placeholder='Search'
 							allowClear
 						/>
-						<Dropdown
+						{/* <Dropdown
 							dropdownRender={(menu) => (
 								<FilterProduct
 									values={{}}
@@ -438,7 +438,7 @@ const Inventories = () => {
 								/>
 							)}>
 							<Button icon={<Sort size={20} />}>Filter</Button>
-						</Dropdown>
+						</Dropdown> */}
 						<Divider type='vertical' />
 						<Button type='primary'>
 							<Link to={'/inventory/add-product'}>Add new Product</Link>
