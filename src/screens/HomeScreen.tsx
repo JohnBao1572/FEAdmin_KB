@@ -7,6 +7,8 @@ import { ShoppingCartOutlined, DollarOutlined } from "@ant-design/icons";
 import axios from 'axios';
 import { SubProductModel } from '../models/Product';
 import { ReportModel } from '../models/reportModel';
+import { render } from '@testing-library/react';
+import { colors } from '../constants/colors';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -30,20 +32,31 @@ const HomeScreen = () => {
   const columns = [
     { title: "Name product", dataIndex: "title", key: "title" },
 
-    { 
-      title: "Image", 
-      dataIndex: "image", 
+    {
+      title: "Image",
+      dataIndex: "image",
       key: "image",
       render: (image: string) => <img src={image} alt="Product" style={{ width: 50, height: 50 }} />,
     },
-    
+
     { title: "Giá", dataIndex: "price", key: "price" },
 
     { title: "Quantity", dataIndex: "count", key: "count" },
 
     { title: "Sizes", dataIndex: "size", key: "size" },
 
-    { title: "colors", dataIndex: "color", key: "color" },
+    {
+      title: "colors", dataIndex: "color", key: "color", render: (color: string) => {
+        return (
+          <div style={{
+            width: 30,
+            height: 30,
+            background: color,
+            borderRadius: '50%'
+          }}></div>
+        )
+      },
+    },
   ];
 
   return (

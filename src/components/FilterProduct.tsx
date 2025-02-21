@@ -74,9 +74,9 @@ const FilterProduct = (props: Props) => {
 		const data =
 			res.data && res.data.length > 0
 				? res.data.map((item: any) => ({
-						label: item.title,
-						value: item._id,
-				  }))
+					label: item.title,
+					value: item._id,
+				}))
 				: [];
 
 		handleChangeValue('categories', data);

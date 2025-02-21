@@ -29,7 +29,7 @@ const ReportScreen = () => {
     try {
       const response = await handleAPI(api);
       setData(response.data);
-      message.success('Daily report fetched successfully');
+      
     } catch (error) {
       message.error('Have an error in report date');
     } finally {
@@ -43,7 +43,7 @@ const ReportScreen = () => {
     try {
       const response = await handleAPI(api);
       setData(response.data);
-      message.success('Monthly report fetched successfully');
+      
     } catch (error) {
       message.error('Have an error in report monthly');
     } finally {

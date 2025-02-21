@@ -5,7 +5,7 @@ import SocialLogin from './components/SocialLogin'
 import handleAPI from '../../apis/handleAPI'
 import { addAuth } from '../../reduxs/reducers/authReducer'
 import { useDispatch } from 'react-redux'
-import { localDataName } from '../../constants/appInfos'
+import { appInfo, localDataName } from '../../constants/appInfos'
 
 
 const { Title, Paragraph, Text } = Typography
@@ -41,7 +41,7 @@ const Login = () => {
 
         <Card style={{ width: '60%', }}>
             <div className="text-center">
-                <img className='mb-3' src="https://firebasestorage.googleapis.com/v0/b/kanban-a0807.appspot.com/o/Logo.png?alt=media&token=4f4cdc9c-ea40-4f8f-8f59-ebc3343fd63d" alt="" style={{ width: 48, height: 48, }} />
+                <img className='mb-3' src={appInfo.logo} alt="" style={{ width: 48, height: 48, }} />
                 <Title level={2}>Login</Title>
 
                 <Paragraph type='secondary'>
