@@ -20,7 +20,7 @@ const HomeScreen = () => {
   }, []);
 
   const fetchTopSellingProducts = async () => {
-    const api = `http://localhost:5000/reports/top5ProductBestSell`;
+    const api = `/reports/top5ProductBestSell`;
     try {
       const res = await handleAPI(api);
       setBestSellingProducts(res.data);

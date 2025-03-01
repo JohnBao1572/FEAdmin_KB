@@ -23,9 +23,9 @@ const ManageOrders = () => {
     const fetchData = async () => {
       try {
         const [ordersRes, addressesRes, productsRes] = await Promise.all([
-          handleAPI('http://localhost:5000/payments/get-bill-admin', null, 'get'),
-          handleAPI('http://localhost:5000/carts/get-addCus-ToAdmin', null, 'get'),
-          handleAPI('http://localhost:5000/products/', null, 'get'),
+          handleAPI('/payments/get-bill-admin', null, 'get'),
+          handleAPI('/carts/get-addCus-ToAdmin', null, 'get'),
+          handleAPI('/products/', null, 'get'),
         ]);
 
         console.log('Orders Response:', ordersRes);
@@ -80,7 +80,7 @@ const ManageOrders = () => {
       }
 
       const updateRes = await handleAPI(
-        `http://localhost:5000/payments/update?id=${editOrder._id}`,
+        `/payments/update?id=${editOrder._id}`,
         { status: editOrder.status, paymentStatus: editOrder.paymentStatus },
         'put'
       );
@@ -89,7 +89,7 @@ const ManageOrders = () => {
         message.success("Update order success");
 
         // Cập nhật danh sách đơn hàng
-        const updatedOrdersRes = await handleAPI('http://localhost:5000/payments/get-bill-admin', 'get');
+        const updatedOrdersRes = await handleAPI('/payments/get-bill-admin', 'get');
 
         if (Array.isArray(updatedOrdersRes.data)) {
           setOrders(updatedOrdersRes.data);

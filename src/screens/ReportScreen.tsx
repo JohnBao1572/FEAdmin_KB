@@ -24,7 +24,7 @@ const ReportScreen = () => {
   }, [viewMode, selectedDate]);
 
   const fetchDailyReport = async (startDate: string, endDate: string) => {
-    const api = `http://localhost:5000/reports/getBillInThatDay?date=${startDate}`
+    const api = `/reports/getBillInThatDay?date=${startDate}`
     setLoading(true);
     try {
       const response = await handleAPI(api);
@@ -38,7 +38,7 @@ const ReportScreen = () => {
   };
 
   const fetchMonthlyReport = async (month: string) => {
-    const api = `http://localhost:5000/reports/getBillInThatMonth?month=${month}`
+    const api = `/reports/getBillInThatMonth?month=${month}`
     setLoading(true);
     try {
       const response = await handleAPI(api);
