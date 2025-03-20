@@ -7,8 +7,8 @@ export const localDataName = {
 };
 
 export const appInfo = {
-    logo: 'https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/325906376_2074777692727406_1745368239073569186_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=107&ccb=1-7&_nc_sid=e99d92&_nc_ohc=7HW1ZO94kisQ7kNvgFWWR1J&_nc_oc=AdiNxZKcnh8o382fjQA8mxwXh38smdbcB17iCdqGCttAW4P9TSMYR58vq6zERQIaCy4&_nc_zt=24&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=AqmjikRNs_YwlIxVIV1x45K&oh=00_AYAnAuC-0AVleTzspQJNDyhbTLFUpd3jrftiG23KcR3zJA&oe=67BDA64F',
+    logo: 'https://scontent.fhan3-2.fna.fbcdn.net/v/t39.30808-6/325906376_2074777692727406_1745368239073569186_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=ispnTI4qAk4Q7kNvgGVNU4t&_nc_oc=AdkU-HjUPY5P7rOIqGHRGvkr8AbKCU6X0sWNGv0Mu3TDIp98bPhV-kbHY37FoZJNxW4&_nc_zt=23&_nc_ht=scontent.fhan3-2.fna&_nc_gid=OLVVh_mKUueVg2OBb73nwg&oh=00_AYHYU50QMhZi1Trdy3LKyepL7KHMzs517Nn8mtbtlLzkEQ&oe=67E15DCD',
 
-    title: 'Bảo Thanh',
+    title: 'Thiên Bảo',
     description: ''
 }
